@@ -1,8 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" >
-	<!-- TODO Add Nodes -->
-</AnchorPane>
-
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<children><BorderPane prefHeight="463.0" prefWidth="646.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<top><MenuBar layoutX="51.5" layoutY="2.5" xmlns:fx="http://javafx.com/fxml">
+  <menus>
+    <Menu mnemonicParsing="false" text="File">
+      <items>
+        <MenuItem mnemonicParsing="false" text="Close" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Edit">
+      <items>
+        <MenuItem mnemonicParsing="false" text="Delete" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Help">
+      <items>
+        <MenuItem mnemonicParsing="false" text="About" />
+      </items>
+    </Menu>
+  </menus>
+</MenuBar>
+</top>
+<center><BorderPane prefHeight="200.0" prefWidth="200.0">
+<top><ToolBar xmlns:fx="http://javafx.com/fxml">
+  <items>
+    <Button mnemonicParsing="false" text="Button" />
+  </items>
+</ToolBar>
+</top>
+<center><TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml">
+  <tabs>
+    <Tab text="Backup">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+    <Tab text="Restore">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
+</center></BorderPane>
+</center>
+<padding>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</padding></BorderPane>
+</children></AnchorPane>
