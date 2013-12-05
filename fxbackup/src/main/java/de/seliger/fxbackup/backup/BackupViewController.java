@@ -32,23 +32,12 @@ public class BackupViewController implements Initializable {
     private AnchorPane treePane;
 
     public void initialize(URL location, ResourceBundle resources) {
-        //        TreeTableView backupTree = 
-        buildFileBrowserTreeTableView();
-
-        //        backupTree.getProperties().put("bottomAnchor", "0.0");
-        //        backupTree.getProperties().put("leftAnchor", "0.0");
-        //        backupTree.getProperties().put("rightAnchor", "0.0");
-        //        backupTree.getProperties().put("topAnchor", "0.0");
-
-        //        treePane.getChildren().clear();
-        //        treePane.getChildren().add(backupTree);
-
-        //        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" 
-
+        buildFileBrowserTreeTableView(backupTree);
     }
 
 
-    private TreeTableView buildFileBrowserTreeTableView() {
+    @SuppressWarnings("unchecked")
+    private TreeTableView<File> buildFileBrowserTreeTableView(TreeTableView<File> backupTree) {
         TreeItem<File> root = createNode(new File("/"));
         root.setExpanded(true);
 
