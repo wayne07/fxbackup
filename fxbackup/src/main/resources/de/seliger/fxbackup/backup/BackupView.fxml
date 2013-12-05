@@ -11,7 +11,7 @@
 			<top>
 				<TitledPane animated="false" text="BackupSet" xmlns:fx="http://javafx.com/fxml">
 					<content>
-						<AnchorPane maxHeight="120.0" minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="200.0">
+						<AnchorPane maxHeight="110.0" minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
 							<children>
 								<GridPane layoutX="-345.6" layoutY="-7.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns:fx="http://javafx.com/fxml">
 									<columnConstraints>
@@ -48,40 +48,50 @@
 				</TitledPane>
 			</top>
 			<center>
-				<BorderPane prefHeight="0.0" prefWidth="200.0">
+				<BorderPane prefHeight="200.0" prefWidth="200.0">
 					<top>
-						<TitledPane animated="false" prefHeight="70.0" text="Aktion" xmlns:fx="http://javafx.com/fxml">
+						<TitledPane animated="false" text="Aktion" xmlns:fx="http://javafx.com/fxml">
 							<content>
 								<AnchorPane maxHeight="50.0" minHeight="0.0" minWidth="0.0" prefHeight="50.0" prefWidth="200.0">
 									<children>
-<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-<columnConstraints>
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-</columnConstraints>
-<rowConstraints>
-<RowConstraints minHeight="10.0" vgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-</rowConstraints>
-<children>
-												<Button mnemonicParsing="false" text="BackupSet löschen..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
-												<Button mnemonicParsing="false" text="Backup starten..." GridPane.columnIndex="0" GridPane.rowIndex="0" />
-</children>
-</GridPane>
+										<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+											xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+											<columnConstraints>
+												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+													xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+													xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+													prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+													prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+													prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" vgrow="SOMETIMES"
+													xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+											</rowConstraints>
+											<children>
+												<Button mnemonicParsing="false" text="BackupSet löschen..."
+													GridPane.columnIndex="1" GridPane.rowIndex="0" />
+												<Button mnemonicParsing="false" text="Backup starten..."
+													GridPane.columnIndex="0" GridPane.rowIndex="0" />
+											</children>
+										</GridPane>
 									</children>
 								</AnchorPane>
 							</content>
 						</TitledPane>
 					</top>
-<center><BorderPane prefHeight="200.0" prefWidth="200.0">
-<center>
-						<TitledPane animated="false" text="Dateiauswahl" xmlns:fx="http://javafx.com/fxml">
+					<center><AnchorPane prefHeight="200.0" prefWidth="200.0">
+					<children>
+						<TitledPane animated="false" text="Dateiauswahl" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns:fx="http://javafx.com/fxml">
 							<content>
-								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+								<AnchorPane fx:id="treePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
 									<children>
-										<TreeTableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns:fx="http://javafx.com/fxml">
+										<TreeTableView fx:id="backupTree" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns:fx="http://javafx.com/fxml">
 											<columns>
 												<TreeTableColumn prefWidth="400.0" text="Dateiname" />
 												<TreeTableColumn prefWidth="130.0" text="Größe" />
@@ -92,8 +102,8 @@
 								</AnchorPane>
 							</content>
 						</TitledPane>
-</center></BorderPane>
-</center>
+					</children></AnchorPane>
+					</center>
 				</BorderPane>
 			</center>
 		</BorderPane>
