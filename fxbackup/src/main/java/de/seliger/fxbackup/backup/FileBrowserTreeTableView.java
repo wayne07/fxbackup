@@ -2,7 +2,6 @@ package de.seliger.fxbackup.backup;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,8 +22,8 @@ public class FileBrowserTreeTableView {
     private static final int WIDTH_MODIFIED_COLUMN = 170;
     private static final int WIDTH_SIZE_COLUMN = 130;
     private static final int WIDTH_NAME_COLUMN = 400;
-    private final NumberFormat nf = NumberFormat.getInstance();
-    private final DateFormat df = SimpleDateFormat.getDateInstance();// new SimpleDateFormat("dd.mm.yyyy");
+
+    private final DateFormat dateformat = SimpleDateFormat.getDateTimeInstance();
 
     private final TreeTableView<File> treeTableView;
 
@@ -71,7 +70,7 @@ public class FileBrowserTreeTableView {
                         if (item == null || empty) {
                             setText(null);
                         } else {
-                            setText(df.format(item));
+                            setText(dateformat.format(item));
                         }
                     }
                 };
@@ -91,26 +90,33 @@ public class FileBrowserTreeTableView {
         });
         sizeColumn.setCellFactory(new Callback<TreeTableColumn<File, File>, TreeTableCell<File, File>>() {
 
-            public TreeTableCell<File, File> call(final TreeTableColumn<File, File> p) {
+            public TreeTableCell<File, File> call(final TreeTableColumn<File, File> column) {
                 return new TreeTableCell<File, File>() {
 
                     @Override
                     protected void updateItem(File item, boolean empty) {
                         super.updateItem(item, empty);
 
-                        TreeTableView<File> treeTable = p.getTreeTableView();
+                        TreeTableView<File> treeTable = column.getTreeTableView();
 
                         // if the File is a directory, it has no size...
-                        if (getIndex() >= treeTable.getColumns().size()) { //impl_getTreeItemCount()) {
+                        int cellIndexInParent = getIndex();
+                        System.out.println("cellIndexInParent: " + cellIndexInParent);
+                        //                        if (cellIndexInParent >= treeTableSize) { //impl_getTreeItemCount()) {
+                        //                            setText(null);
+                        //                        } else {
+                        TreeItem<File> treeItem = treeTable.getTreeItem(cellIndexInParent);
+                        System.out.println("item: " + item);
+                        System.out.println("empty: " + empty);
+                        System.out.println("treeItem: " + treeItem);
+                        //                            System.out.println("treeItem.getValue(): " + treeItem.getValue());
+                        if (item == null || empty || treeItem == null || treeItem.getValue() == null || treeItem.getValue().isDirectory()) {
                             setText(null);
                         } else {
-                            TreeItem<File> treeItem = treeTable.getTreeItem(getIndex());
-                            if (item == null || empty || treeItem == null || treeItem.getValue() == null || treeItem.getValue().isDirectory()) {
-                                setText(null);
-                            } else {
-                                setText(nf.format(item.length()) + " KB");
-                            }
+                            long length = item.length();
+                            setText(new FileSizeFormatter().format(length));
                         }
+                        //                        }
                     }
                 };
             }
