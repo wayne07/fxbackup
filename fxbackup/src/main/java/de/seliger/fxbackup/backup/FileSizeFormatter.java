@@ -6,6 +6,10 @@ public class FileSizeFormatter {
 
     private final NumberFormat numberFormat = NumberFormat.getInstance();
 
+    public FileSizeFormatter() {
+        numberFormat.setMaximumFractionDigits(2);
+    }
+
     public String format(long length) {
         String result = "";
         String formattedSize = getFormattedSizeFor(length);
