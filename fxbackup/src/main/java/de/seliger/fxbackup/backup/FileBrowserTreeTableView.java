@@ -8,13 +8,13 @@ import java.util.Date;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.util.Callback;
 
 public class FileBrowserTreeTableView {
@@ -32,21 +32,20 @@ public class FileBrowserTreeTableView {
     }
 
     @SuppressWarnings("unchecked")
-    public TreeTableView<File> build() {
-        TreeItem<File> root = createNode(new File("/"));
+    public void build() {
+        CheckBoxTreeItem<File> root = TreeItemFactory.createNode(new File("/"));
         root.setExpanded(true);
 
         treeTableView.setShowRoot(true);
         treeTableView.setRoot(root);
 
-        TreeTableColumn<File, String> nameColumn = createNameColumn();
+        TreeTableColumn<File, Boolean> nameColumn = createNameColumn();
         TreeTableColumn<File, File> sizeColumn = createSizeColumn();
         TreeTableColumn<File, Date> lastModifiedColumn = createModifiedColumn();
 
         treeTableView.getColumns().clear();
         treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
 
-        return treeTableView;
     }
 
     private TreeTableColumn<File, Date> createModifiedColumn() {
@@ -101,14 +100,11 @@ public class FileBrowserTreeTableView {
 
                         // if the File is a directory, it has no size...
                         int cellIndexInParent = getIndex();
-                        System.out.println("cellIndexInParent: " + cellIndexInParent);
-                        //                        if (cellIndexInParent >= treeTableSize) { //impl_getTreeItemCount()) {
-                        //                            setText(null);
-                        //                        } else {
+                        //                        System.out.println("cellIndexInParent: " + cellIndexInParent);
                         TreeItem<File> treeItem = treeTable.getTreeItem(cellIndexInParent);
-                        System.out.println("item: " + item);
-                        System.out.println("empty: " + empty);
-                        System.out.println("treeItem: " + treeItem);
+                        //                        System.out.println("item: " + item);
+                        //                        System.out.println("empty: " + empty);
+                        //                        System.out.println("treeItem: " + treeItem);
                         //                            System.out.println("treeItem.getValue(): " + treeItem.getValue());
                         if (item == null || empty || treeItem == null || treeItem.getValue() == null || treeItem.getValue().isDirectory()) {
                             setText(null);
@@ -139,66 +135,27 @@ public class FileBrowserTreeTableView {
         return sizeColumn;
     }
 
-    private TreeTableColumn<File, String> createNameColumn() {
-        TreeTableColumn<File, String> nameColumn = new TreeTableColumn<File, String>("Name");
+    private TreeTableColumn<File, Boolean> createNameColumn() {
+        TreeTableColumn<File, Boolean> nameColumn = new TreeTableColumn<File, Boolean>("Name");
         nameColumn.setPrefWidth(WIDTH_NAME_COLUMN);
-        nameColumn.setCellValueFactory(new Callback<CellDataFeatures<File, String>, ObservableValue<String>>() {
 
-            public ObservableValue<String> call(CellDataFeatures<File, String> p) {
-                File f = p.getValue().getValue();
-                String text = f.getParentFile() == null ? "/" : f.getName();
-                return new ReadOnlyObjectWrapper<String>(text);
-            }
-        });
+
+        Callback<CellDataFeatures<File, Boolean>, ObservableValue<Boolean>> callbackForCellValue = new FileCellCallback();
+        nameColumn.setCellValueFactory(callbackForCellValue);
+
+        Callback<TreeTableColumn<File, Boolean>, TreeTableCell<File, Boolean>> callbackForTreeTableColumn = CheckBoxTreeTableCell.forTreeTableColumn(nameColumn);
+        nameColumn.setCellFactory(callbackForTreeTableColumn);
+        //        nameColumn.setCellFactory(new NameCellFactory());
         return nameColumn;
     }
 
-    private ObservableList<TreeItem<File>> buildChildren(TreeItem<File> TreeItem) {
-        File f = TreeItem.getValue();
-        if (f != null && f.isDirectory()) {
-            File[] files = f.listFiles();
-            if (files != null) {
-                ObservableList<TreeItem<File>> children = FXCollections.observableArrayList();
+    //    private final Callback<TreeTableColumn<File, String>, TreeTableCell<File, String>> nameCellFactory = new NameCellFactory();
 
-                for (File childFile : files) {
-                    children.add(createNode(childFile));
-                }
-
-                return children;
-            }
-        }
-
-        return FXCollections.emptyObservableList();
-    }
-
-    private TreeItem<File> createNode(final File f) {
-        final TreeItem<File> node = new TreeItem<File>(f) {
-
-            private boolean isLeaf;
-            private boolean isFirstTimeChildren = true;
-            private boolean isFirstTimeLeaf = true;
-
-            @Override
-            public ObservableList<TreeItem<File>> getChildren() {
-                if (isFirstTimeChildren) {
-                    isFirstTimeChildren = false;
-                    super.getChildren().setAll(buildChildren(this));
-                }
-                return super.getChildren();
-            }
-
-            @Override
-            public boolean isLeaf() {
-                if (isFirstTimeLeaf) {
-                    isFirstTimeLeaf = false;
-                    File f = getValue();
-                    isLeaf = f.isFile();
-                }
-
-                return isLeaf;
-            }
-        };
-        return node;
-    }
+    //    lastModifiedColumn.setCellValueFactory(new Callback<CellDataFeatures<File, Date>, ObservableValue<Date>>() {
+    //
+    //        public ObservableValue<Date> call(CellDataFeatures<File, Date> p) {
+    //            return new ReadOnlyObjectWrapper<Date>(new Date(p.getValue().getValue().lastModified()));
+    //        }
+    //    });
 
 }
