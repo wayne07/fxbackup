@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
@@ -14,7 +16,6 @@ import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
-import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.util.Callback;
 
 public class FileBrowserTreeTableView {
@@ -39,7 +40,7 @@ public class FileBrowserTreeTableView {
         treeTableView.setShowRoot(true);
         treeTableView.setRoot(root);
 
-        TreeTableColumn<File, Boolean> nameColumn = createNameColumn();
+        TreeTableColumn<File, String> nameColumn = createNameColumn();
         TreeTableColumn<File, File> sizeColumn = createSizeColumn();
         TreeTableColumn<File, Date> lastModifiedColumn = createModifiedColumn();
 
@@ -135,17 +136,57 @@ public class FileBrowserTreeTableView {
         return sizeColumn;
     }
 
-    private TreeTableColumn<File, Boolean> createNameColumn() {
-        TreeTableColumn<File, Boolean> nameColumn = new TreeTableColumn<File, Boolean>("Name");
+    private TreeTableColumn<File, String> createNameColumn() {
+        TreeTableColumn<File, String> nameColumn = new TreeTableColumn<File, String>("Name");
         nameColumn.setPrefWidth(WIDTH_NAME_COLUMN);
 
-        Callback<CellDataFeatures<File, Boolean>, ObservableValue<Boolean>> callbackForCellValue = new FileCellCallback();
+        Callback<CellDataFeatures<File, String>, ObservableValue<String>> callbackForCellValue = new FileCellCallback();
         nameColumn.setCellValueFactory(callbackForCellValue);
 
-        Callback<TreeTableColumn<File, Boolean>, TreeTableCell<File, Boolean>> callbackForTreeTableColumn = CheckBoxTreeTableCell.forTreeTableColumn(nameColumn);
-        nameColumn.setCellFactory(callbackForTreeTableColumn);
+        //        Callback<Integer, ObservableValue<Boolean>> callback = createCallback();
+        //
+        //        Callback<TreeTableColumn<File, String>, TreeTableCell<File, String>> callbackForTreeTableColumn = CheckBoxTreeTableCell.forTreeTableColumn(callback);
+        //        nameColumn.setCellFactory(callbackForTreeTableColumn);
 
         return nameColumn;
     }
 
+    private Callback<Integer, ObservableValue<Boolean>> createCallback() {
+        Callback<Integer, ObservableValue<Boolean>> callback = new Callback<Integer, ObservableValue<Boolean>>() {
+
+            public ObservableValue<Boolean> call(Integer param) {
+                ObservableValue<Boolean> value = new ObservableValue<Boolean>() {
+
+                    public void addListener(InvalidationListener listener) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    public void removeListener(InvalidationListener listener) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    public void addListener(ChangeListener<? super Boolean> listener) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    public void removeListener(ChangeListener<? super Boolean> listener) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    public Boolean getValue() {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+
+                };
+                return value;
+            }
+
+        };
+        return callback;
+    }
 }
