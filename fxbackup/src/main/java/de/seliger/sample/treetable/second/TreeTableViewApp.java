@@ -10,25 +10,9 @@ import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
 
-/**
- * A simple implementation of TreeTableView. The Notes column is editable.
- *
- * @sampleName TreeTableView
- * @preview preview.png
- * @see javafx.scene.control.cell.TextFieldTreeTableCell
- * @see javafx.scene.control.cell.TreeItemPropertyValueFactory
- * @see javafx.scene.control.TreeItem
- * @see javafx.scene.control.TreeTableCell
- * @see javafx.scene.control.TreeTableColumn
- * @see javafx.scene.control.TreeTableView
- * @see javafx.beans.property.SimpleStringProperty
- * @see javafx.beans.property.StringProperty
- * @see javafx.beans.property.ObjectProperty
- * @see javafx.beans.property.SimpleObjectProperty
- * @embedded
- */
 public class TreeTableViewApp extends Application {
 
+    @SuppressWarnings("unchecked")
     private TreeItem<Inventory> getData() {
         final TreeItem<Inventory> rootItem = new TreeItem<>(new Inventory("Root", new Data("Root data"), ""));
         final TreeItem<Inventory> child1Item = new TreeItem<>(new Inventory("Child 1", new Data("Child 1 data"), "My notes"));
@@ -40,6 +24,7 @@ public class TreeTableViewApp extends Application {
         return rootItem;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Parent createContent() {
 
         final TreeTableColumn<Inventory, String> nameColumn = new TreeTableColumn<Inventory, String>("Name");
@@ -60,7 +45,7 @@ public class TreeTableViewApp extends Application {
 
         final TreeTableView treeTableView = new TreeTableView(getData());
         treeTableView.setEditable(true);
-        treeTableView.setPrefSize(430, 200);
+        treeTableView.setPrefSize(600, 400);
         treeTableView.getColumns().setAll(nameColumn, dataColumn, notesColumn);
 
         return treeTableView;
