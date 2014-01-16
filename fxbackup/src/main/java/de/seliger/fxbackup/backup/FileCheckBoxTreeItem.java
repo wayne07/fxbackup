@@ -13,7 +13,8 @@ public class FileCheckBoxTreeItem extends CheckBoxTreeItem<File> {
     private boolean isFirstTimeLeaf = true;
 
     public FileCheckBoxTreeItem(File file) {
-        super.setValue(file);
+        super(file);
+        //        super.setValue(file);
     }
 
     @Override

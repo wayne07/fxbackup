@@ -139,23 +139,13 @@ public class FileBrowserTreeTableView {
         TreeTableColumn<File, Boolean> nameColumn = new TreeTableColumn<File, Boolean>("Name");
         nameColumn.setPrefWidth(WIDTH_NAME_COLUMN);
 
-
         Callback<CellDataFeatures<File, Boolean>, ObservableValue<Boolean>> callbackForCellValue = new FileCellCallback();
         nameColumn.setCellValueFactory(callbackForCellValue);
 
         Callback<TreeTableColumn<File, Boolean>, TreeTableCell<File, Boolean>> callbackForTreeTableColumn = CheckBoxTreeTableCell.forTreeTableColumn(nameColumn);
         nameColumn.setCellFactory(callbackForTreeTableColumn);
-        //        nameColumn.setCellFactory(new NameCellFactory());
+
         return nameColumn;
     }
-
-    //    private final Callback<TreeTableColumn<File, String>, TreeTableCell<File, String>> nameCellFactory = new NameCellFactory();
-
-    //    lastModifiedColumn.setCellValueFactory(new Callback<CellDataFeatures<File, Date>, ObservableValue<Date>>() {
-    //
-    //        public ObservableValue<Date> call(CellDataFeatures<File, Date> p) {
-    //            return new ReadOnlyObjectWrapper<Date>(new Date(p.getValue().getValue().lastModified()));
-    //        }
-    //    });
 
 }
