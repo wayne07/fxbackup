@@ -46,7 +46,7 @@ public class TreeTableViewApp extends Application {
         dataColumn.setCellValueFactory(new TreeItemPropertyValueFactory("data"));
 
         final TreeTableColumn<Inventory, String> notesColumn = new TreeTableColumn<>("Notes (editable)");
-        notesColumn.setEditable(true);
+        notesColumn.setEditable(false);
         notesColumn.setMinWidth(150);
         notesColumn.setCellValueFactory(new TreeItemPropertyValueFactory("notes"));
         notesColumn.setCellFactory(TextFieldTreeTableCell.<Inventory> forTreeTableColumn());
