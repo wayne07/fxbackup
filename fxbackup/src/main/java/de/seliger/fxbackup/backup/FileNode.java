@@ -14,7 +14,7 @@ public class FileNode {
 	private final FileSizeFormatter fileSizeFormatter = new FileSizeFormatter();
 
 	public FileNode(File file) {
-		this.filename = new SimpleStringProperty(file.getName());
+		this.filename = new SimpleStringProperty(file.getAbsolutePath());
 		this.fileSize = new SimpleStringProperty(Long.toString(file.getTotalSpace()));
 		this.modifiedDate = new SimpleStringProperty(fileSizeFormatter.format(file.lastModified()));
 	}

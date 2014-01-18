@@ -1,6 +1,5 @@
 package de.seliger.fxbackup.backup;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -11,13 +10,14 @@ import javafx.scene.layout.AnchorPane;
 
 public class BackupViewController implements Initializable {
 
-    @FXML
-    private TreeTableView<File> backupTree;
+	@FXML
+	private TreeTableView<FileNode> backupTree;
 
-    @FXML
-    private AnchorPane treePane;
+	@FXML
+	private AnchorPane treePane;
 
-    public void initialize(URL location, ResourceBundle resources) {
-        new FileBrowserTreeTableView(backupTree).build();
-    }
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		new FileBrowserTreeTableView(backupTree).build();
+	}
 }
