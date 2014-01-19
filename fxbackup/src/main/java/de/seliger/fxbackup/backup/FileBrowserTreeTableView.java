@@ -43,7 +43,6 @@ public class FileBrowserTreeTableView {
 		treeTableView.setRoot(root);
 		treeTableView.getColumns().clear();
 		treeTableView.getColumns().setAll(nameColumn, sizeColumn);
-
 	}
 
 	private TreeTableColumn<File, Date> createModifiedColumn() {
