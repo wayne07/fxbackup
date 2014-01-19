@@ -11,7 +11,7 @@ class MyCellFactory implements Callback<Integer, ObservableValue<Boolean>> {
     private ObservableBooleanValue observableValue;
 
     @Override
-    public ObservableValue<Boolean> call(Integer param) {
+    public ObservableValue<Boolean> call(Integer index) {
         return new ObservableBooleanValue() {
 
             @Override

@@ -35,38 +35,23 @@ public class FileBrowserTreeTableView {
 		treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
 	}
 
+	private TreeTableColumn<FileNode, String> createNameColumn() {
+		TreeTableColumn<FileNode, String> nameColumn = new TreeTableColumn<FileNode, String>("Filename");
+		nameColumn.setMinWidth(WIDTH_NAME_COLUMN);
+		nameColumn.setPrefWidth(WIDTH_NAME_COLUMN);
+		nameColumn.setEditable(true);
+		nameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("filename"));
+		nameColumn.setCellFactory(CheckBoxTreeTableCell.<FileNode, String> forTreeTableColumn(new MyCellFactory(), true));
+
+		return nameColumn;
+	}
+
 	private TreeTableColumn<FileNode, String> createModifiedColumn() {
 		TreeTableColumn<FileNode, String> lastModifiedColumn = new TreeTableColumn<FileNode, String>("Last Modified");
 		lastModifiedColumn.setPrefWidth(WIDTH_MODIFIED_COLUMN);
 		lastModifiedColumn.setEditable(false);
 		lastModifiedColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("modifiedDate"));
 
-		// lastModifiedColumn.setCellValueFactory(new Callback<CellDataFeatures<FileNode, String>, ObservableValue<String>>() {
-		//
-		// @Override
-		// public ObservableValue<Date> call(CellDataFeatures<FileNode, Date> p) {
-		// return new ReadOnlyObjectWrapper<Date>(new Date(p.getValue().getValue().lastModified()));
-		// }
-		// });
-		// lastModifiedColumn.setCellFactory(new Callback<TreeTableColumn<FileNode, Date>, TreeTableCell<FileNode, Date>>() {
-		//
-		// @Override
-		// public TreeTableCell<File, Date> call(TreeTableColumn<File, Date> p) {
-		// return new TreeTableCell<File, Date>() {
-		//
-		// @Override
-		// protected void updateItem(Date item, boolean empty) {
-		// super.updateItem(item, empty);
-		//
-		// if (item == null || empty) {
-		// setText(null);
-		// } else {
-		// setText(dateformat.format(item));
-		// }
-		// }
-		// };
-		// }
-		// });
 		return lastModifiedColumn;
 	}
 
@@ -75,46 +60,9 @@ public class FileBrowserTreeTableView {
 		sizeColumn.setMinWidth(WIDTH_SIZE_COLUMN);
 		sizeColumn.setPrefWidth(WIDTH_SIZE_COLUMN);
 		sizeColumn.setEditable(false);
+		// sizeColumn.setStyle("RIGHT");
 		sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("fileSize"));
 
-		// sizeColumn.setCellValueFactory(new Callback<CellDataFeatures<FileNode, String>, ObservableValue<String>>() {
-		//
-		// @Override
-		// public ObservableValue<String> call(CellDataFeatures<FileNode, String> p) {
-		// return new ReadOnlyObjectWrapper<String>(p.getValue().getValue().getFileSize());
-		// }
-		// });
-		// sizeColumn.setCellFactory(new Callback<TreeTableColumn<FileNode, String>, TreeTableCell<FileNode, String>>() {
-		//
-		// @Override
-		// public TreeTableCell<FileNode, String> call(final TreeTableColumn<FileNode, String> column) {
-		// return new TreeTableCell<FileNode, String>() {
-		//
-		// // @Override
-		// protected void updateItem(FileNode item, boolean empty) {
-		// super.updateItem(item.getFileSize().toString(), empty);
-		//
-		// // TreeTableView<FileNode> treeTable = column.getTreeTableView();
-		// //
-		// // // if the File is a directory, it has no size...
-		// // int cellIndexInParent = getIndex();
-		// // // System.out.println("cellIndexInParent: " + cellIndexInParent);
-		// // TreeItem<File> treeItem = treeTable.getTreeItem(cellIndexInParent);
-		// // System.out.println("item: " + item);
-		// // System.out.println("empty: " + empty);
-		// // System.out.println("treeItem: " + treeItem);
-		// // System.out.println("treeItem.getValue(): " + treeItem.getValue());
-		// // if (item == null || empty || treeItem == null || treeItem.getValue() == null || treeItem.getValue().isDirectory()) {
-		// if (item == null || empty || item.isDirectory()) {
-		// setText(null);
-		// } else {
-		// setText(item.getFileSize().toString());
-		// }
-		// // }
-		// }
-		// };
-		// }
-		// });
 		// sizeColumn.setComparator(new Comparator<String>() {
 		//
 		// @Override
@@ -133,70 +81,5 @@ public class FileBrowserTreeTableView {
 		// });
 		return sizeColumn;
 	}
-
-	private TreeTableColumn<FileNode, String> createNameColumn() {
-		TreeTableColumn<FileNode, String> nameColumn = new TreeTableColumn<FileNode, String>("Filename");
-		nameColumn.setMinWidth(WIDTH_NAME_COLUMN);
-		nameColumn.setPrefWidth(WIDTH_NAME_COLUMN);
-		nameColumn.setEditable(true);
-		nameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("filename"));
-
-		nameColumn.setCellFactory(CheckBoxTreeTableCell.<FileNode, String> forTreeTableColumn(new MyCellFactory(), true));
-
-		// Callback<CellDataFeatures<File, String>, ObservableValue<String>> callbackForCellValue = new FileCellCallback();
-		// nameColumn.setCellValueFactory(callbackForCellValue);
-
-		// Callback<Integer, ObservableValue<Boolean>> callback = createCallback();
-		//
-		// Callback<TreeTableColumn<File, String>, TreeTableCell<File, String>> callbackForTreeTableColumn = CheckBoxTreeTableCell.forTreeTableColumn(callback);
-		// nameColumn.setCellFactory(callbackForTreeTableColumn);
-
-		return nameColumn;
-	}
-
-	// private Callback<Integer, ObservableValue<Boolean>> createCallback() {
-	// Callback<Integer, ObservableValue<Boolean>> callback = new Callback<Integer, ObservableValue<Boolean>>() {
-	//
-	// @Override
-	// public ObservableValue<Boolean> call(Integer param) {
-	// ObservableValue<Boolean> value = new ObservableValue<Boolean>() {
-	//
-	// @Override
-	// public void addListener(InvalidationListener listener) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void removeListener(InvalidationListener listener) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void addListener(ChangeListener<? super Boolean> listener) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void removeListener(ChangeListener<? super Boolean> listener) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public Boolean getValue() {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// };
-	// return value;
-	// }
-	//
-	// };
-	// return callback;
-	// }
 
 }
