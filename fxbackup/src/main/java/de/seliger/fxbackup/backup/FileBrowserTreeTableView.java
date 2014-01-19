@@ -3,12 +3,9 @@ package de.seliger.fxbackup.backup;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
 import java.util.Date;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
@@ -36,26 +33,19 @@ public class FileBrowserTreeTableView {
 	@SuppressWarnings("unchecked")
 	public void build() {
 		TreeTableColumn<FileNode, String> nameColumn = createNameColumn();
-		// TreeTableColumn<FileNode, String> sizeColumn = createSizeColumn();
+		TreeTableColumn<FileNode, String> sizeColumn = createSizeColumn();
 		// TreeTableColumn<FileNode, String> lastModifiedColumn = createModifiedColumn();
 
 		TreeItem<FileNode> root = TreeItemFactory.createNode(new File("/tmp"));
-		// CheckBoxTreeItem<FileNode> root = TreeItemFactory.createNode(new FileNode(new File("/")));
 		root.setExpanded(true);
 		treeTableView.setShowRoot(true);
 		treeTableView.setEditable(true);
 		treeTableView.setRoot(root);
 		treeTableView.getColumns().clear();
-		treeTableView.getColumns().setAll(nameColumn);
+		treeTableView.getColumns().setAll(nameColumn, sizeColumn);
 		// treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
 
 	}
-
-	// private TreeItem<FileNode> createTreeData() {
-	// TreeItem<FileNode> rootNode = new TreeItem<FileNode>(new FileNode(new File("/tmp")));
-	//
-	// return TreeItemFactory.buildChildren(rootNode);
-	// }
 
 	private TreeTableColumn<File, Date> createModifiedColumn() {
 		TreeTableColumn<File, Date> lastModifiedColumn = new TreeTableColumn<File, Date>("Last Modified");
@@ -89,63 +79,67 @@ public class FileBrowserTreeTableView {
 		return lastModifiedColumn;
 	}
 
-	private TreeTableColumn<File, File> createSizeColumn() {
-		TreeTableColumn<File, File> sizeColumn = new TreeTableColumn<File, File>("Size");
+	private TreeTableColumn<FileNode, String> createSizeColumn() {
+		TreeTableColumn<FileNode, String> sizeColumn = new TreeTableColumn<FileNode, String>("Size");
+		sizeColumn.setMinWidth(WIDTH_SIZE_COLUMN);
 		sizeColumn.setPrefWidth(WIDTH_SIZE_COLUMN);
-		sizeColumn.setCellValueFactory(new Callback<CellDataFeatures<File, File>, ObservableValue<File>>() {
+		sizeColumn.setEditable(false);
+		sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory("fileSize"));
 
-			@Override
-			public ObservableValue<File> call(CellDataFeatures<File, File> p) {
-				return new ReadOnlyObjectWrapper<File>(p.getValue().getValue());
-			}
-		});
-		sizeColumn.setCellFactory(new Callback<TreeTableColumn<File, File>, TreeTableCell<File, File>>() {
-
-			@Override
-			public TreeTableCell<File, File> call(final TreeTableColumn<File, File> column) {
-				return new TreeTableCell<File, File>() {
-
-					@Override
-					protected void updateItem(File item, boolean empty) {
-						super.updateItem(item, empty);
-
-						TreeTableView<File> treeTable = column.getTreeTableView();
-
-						// if the File is a directory, it has no size...
-						int cellIndexInParent = getIndex();
-						// System.out.println("cellIndexInParent: " + cellIndexInParent);
-						TreeItem<File> treeItem = treeTable.getTreeItem(cellIndexInParent);
-						// System.out.println("item: " + item);
-						// System.out.println("empty: " + empty);
-						// System.out.println("treeItem: " + treeItem);
-						// System.out.println("treeItem.getValue(): " + treeItem.getValue());
-						if (item == null || empty || treeItem == null || treeItem.getValue() == null || treeItem.getValue().isDirectory()) {
-							setText(null);
-						} else {
-							long length = item.length();
-							setText(new FileSizeFormatter().format(length));
-						}
-						// }
-					}
-				};
-			}
-		});
-		sizeColumn.setComparator(new Comparator<File>() {
-
-			@Override
-			public int compare(File f1, File f2) {
-				long s1 = f1.isDirectory() ? 0 : f1.length();
-				long s2 = f2.isDirectory() ? 0 : f2.length();
-				long result = s1 - s2;
-				if (result < 0) {
-					return -1;
-				} else if (result == 0) {
-					return 0;
-				} else {
-					return 1;
-				}
-			}
-		});
+		// sizeColumn.setCellValueFactory(new Callback<CellDataFeatures<FileNode, String>, ObservableValue<String>>() {
+		//
+		// @Override
+		// public ObservableValue<String> call(CellDataFeatures<FileNode, String> p) {
+		// return new ReadOnlyObjectWrapper<String>(p.getValue().getValue().getFileSize());
+		// }
+		// });
+		// sizeColumn.setCellFactory(new Callback<TreeTableColumn<FileNode, String>, TreeTableCell<FileNode, String>>() {
+		//
+		// @Override
+		// public TreeTableCell<FileNode, String> call(final TreeTableColumn<FileNode, String> column) {
+		// return new TreeTableCell<FileNode, String>() {
+		//
+		// // @Override
+		// protected void updateItem(FileNode item, boolean empty) {
+		// super.updateItem(item.getFileSize().toString(), empty);
+		//
+		// // TreeTableView<FileNode> treeTable = column.getTreeTableView();
+		// //
+		// // // if the File is a directory, it has no size...
+		// // int cellIndexInParent = getIndex();
+		// // // System.out.println("cellIndexInParent: " + cellIndexInParent);
+		// // TreeItem<File> treeItem = treeTable.getTreeItem(cellIndexInParent);
+		// // System.out.println("item: " + item);
+		// // System.out.println("empty: " + empty);
+		// // System.out.println("treeItem: " + treeItem);
+		// // System.out.println("treeItem.getValue(): " + treeItem.getValue());
+		// // if (item == null || empty || treeItem == null || treeItem.getValue() == null || treeItem.getValue().isDirectory()) {
+		// if (item == null || empty || item.isDirectory()) {
+		// setText(null);
+		// } else {
+		// setText(item.getFileSize().toString());
+		// }
+		// // }
+		// }
+		// };
+		// }
+		// });
+		// sizeColumn.setComparator(new Comparator<File>() {
+		//
+		// @Override
+		// public int compare(File f1, File f2) {
+		// long s1 = f1.isDirectory() ? 0 : f1.length();
+		// long s2 = f2.isDirectory() ? 0 : f2.length();
+		// long result = s1 - s2;
+		// if (result < 0) {
+		// return -1;
+		// } else if (result == 0) {
+		// return 0;
+		// } else {
+		// return 1;
+		// }
+		// }
+		// });
 		return sizeColumn;
 	}
 
@@ -169,49 +163,49 @@ public class FileBrowserTreeTableView {
 		return nameColumn;
 	}
 
-	private Callback<Integer, ObservableValue<Boolean>> createCallback() {
-		Callback<Integer, ObservableValue<Boolean>> callback = new Callback<Integer, ObservableValue<Boolean>>() {
-
-			@Override
-			public ObservableValue<Boolean> call(Integer param) {
-				ObservableValue<Boolean> value = new ObservableValue<Boolean>() {
-
-					@Override
-					public void addListener(InvalidationListener listener) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void removeListener(InvalidationListener listener) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void addListener(ChangeListener<? super Boolean> listener) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void removeListener(ChangeListener<? super Boolean> listener) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public Boolean getValue() {
-						// TODO Auto-generated method stub
-						return null;
-					}
-
-				};
-				return value;
-			}
-
-		};
-		return callback;
-	}
+	// private Callback<Integer, ObservableValue<Boolean>> createCallback() {
+	// Callback<Integer, ObservableValue<Boolean>> callback = new Callback<Integer, ObservableValue<Boolean>>() {
+	//
+	// @Override
+	// public ObservableValue<Boolean> call(Integer param) {
+	// ObservableValue<Boolean> value = new ObservableValue<Boolean>() {
+	//
+	// @Override
+	// public void addListener(InvalidationListener listener) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void removeListener(InvalidationListener listener) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void addListener(ChangeListener<? super Boolean> listener) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void removeListener(ChangeListener<? super Boolean> listener) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public Boolean getValue() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// };
+	// return value;
+	// }
+	//
+	// };
+	// return callback;
+	// }
 
 }
