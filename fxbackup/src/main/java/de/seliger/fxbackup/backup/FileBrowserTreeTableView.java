@@ -39,7 +39,7 @@ public class FileBrowserTreeTableView {
 		// TreeTableColumn<FileNode, String> sizeColumn = createSizeColumn();
 		// TreeTableColumn<FileNode, String> lastModifiedColumn = createModifiedColumn();
 
-		TreeItem<FileNode> root = createTreeData();
+		TreeItem<FileNode> root = TreeItemFactory.createNode(new File("/tmp"));
 		// CheckBoxTreeItem<FileNode> root = TreeItemFactory.createNode(new FileNode(new File("/")));
 		root.setExpanded(true);
 		treeTableView.setShowRoot(true);
@@ -51,10 +51,11 @@ public class FileBrowserTreeTableView {
 
 	}
 
-	private TreeItem<FileNode> createTreeData() {
-		TreeItem<FileNode> rootNode = new TreeItem<FileNode>(new FileNode(new File("/tmp")));
-		return rootNode;
-	}
+	// private TreeItem<FileNode> createTreeData() {
+	// TreeItem<FileNode> rootNode = new TreeItem<FileNode>(new FileNode(new File("/tmp")));
+	//
+	// return TreeItemFactory.buildChildren(rootNode);
+	// }
 
 	private TreeTableColumn<File, Date> createModifiedColumn() {
 		TreeTableColumn<File, Date> lastModifiedColumn = new TreeTableColumn<File, Date>("Last Modified");

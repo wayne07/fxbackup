@@ -12,8 +12,10 @@ public class FileNode {
 	private final StringProperty modifiedDate;
 
 	private final FileSizeFormatter fileSizeFormatter = new FileSizeFormatter();
+	private final File file;
 
 	public FileNode(File file) {
+		this.file = file;
 		this.filename = new SimpleStringProperty(file.getAbsolutePath());
 		this.fileSize = new SimpleStringProperty(Long.toString(file.getTotalSpace()));
 		this.modifiedDate = new SimpleStringProperty(fileSizeFormatter.format(file.lastModified()));
@@ -29,6 +31,14 @@ public class FileNode {
 
 	public StringProperty getModifiedDate() {
 		return modifiedDate;
+	}
+
+	public boolean isDirectory() {
+		return file.isDirectory();
+	}
+
+	public File[] listFiles() {
+		return file.listFiles();
 	}
 
 }

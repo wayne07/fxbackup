@@ -4,31 +4,31 @@ import java.io.File;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.CheckBoxTreeItem;
+import javafx.scene.control.TreeItem;
 
 public class TreeItemFactory {
 
-    public static ObservableList<CheckBoxTreeItem<File>> buildChildren(CheckBoxTreeItem<File> TreeItem) {
-        File f = TreeItem.getValue();
-        if (f != null && f.isDirectory()) {
-            File[] files = f.listFiles();
-            if (files != null) {
-                ObservableList<CheckBoxTreeItem<File>> children = FXCollections.observableArrayList();
+	public static ObservableList<TreeItem<FileNode>> buildChildren(TreeItem<FileNode> TreeItem) {
+		FileNode fileNode = TreeItem.getValue();
+		if (fileNode != null && fileNode.isDirectory()) {
+			File[] files = fileNode.listFiles();
+			if (files != null) {
+				ObservableList<TreeItem<FileNode>> children = FXCollections.observableArrayList();
 
-                for (File childFile : files) {
-                    children.add(createNode(childFile));
-                }
+				for (File childFile : files) {
+					children.add(createNode(childFile));
+				}
 
-                return children;
-            }
-        }
+				return children;
+			}
+		}
 
-        return FXCollections.emptyObservableList();
-    }
+		return FXCollections.emptyObservableList();
+	}
 
-    public static CheckBoxTreeItem<File> createNode(final File f) {
-        CheckBoxTreeItem<File> node = new FileCheckBoxTreeItem(f);
-        return node;
-    }
+	public static TreeItem<FileNode> createNode(final File file) {
+		TreeItem<FileNode> node = new FileCheckBoxTreeItem(new FileNode(file));
+		return node;
+	}
 
 }
