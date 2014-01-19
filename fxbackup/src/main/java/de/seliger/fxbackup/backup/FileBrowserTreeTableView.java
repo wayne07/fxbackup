@@ -1,28 +1,18 @@
 package de.seliger.fxbackup.backup;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
-import javafx.util.Callback;
 
 public class FileBrowserTreeTableView {
 
 	private static final int WIDTH_MODIFIED_COLUMN = 170;
 	private static final int WIDTH_SIZE_COLUMN = 130;
 	private static final int WIDTH_NAME_COLUMN = 400;
-
-	private final DateFormat dateformat = SimpleDateFormat.getDateTimeInstance();
 
 	private final TreeTableView<FileNode> treeTableView;
 
@@ -34,7 +24,7 @@ public class FileBrowserTreeTableView {
 	public void build() {
 		TreeTableColumn<FileNode, String> nameColumn = createNameColumn();
 		TreeTableColumn<FileNode, String> sizeColumn = createSizeColumn();
-		// TreeTableColumn<FileNode, String> lastModifiedColumn = createModifiedColumn();
+		TreeTableColumn<FileNode, String> lastModifiedColumn = createModifiedColumn();
 
 		TreeItem<FileNode> root = TreeItemFactory.createNode(new File("/tmp"));
 		root.setExpanded(true);
@@ -42,38 +32,41 @@ public class FileBrowserTreeTableView {
 		treeTableView.setEditable(true);
 		treeTableView.setRoot(root);
 		treeTableView.getColumns().clear();
-		treeTableView.getColumns().setAll(nameColumn, sizeColumn);
+		treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
 	}
 
-	private TreeTableColumn<File, Date> createModifiedColumn() {
-		TreeTableColumn<File, Date> lastModifiedColumn = new TreeTableColumn<File, Date>("Last Modified");
+	private TreeTableColumn<FileNode, String> createModifiedColumn() {
+		TreeTableColumn<FileNode, String> lastModifiedColumn = new TreeTableColumn<FileNode, String>("Last Modified");
 		lastModifiedColumn.setPrefWidth(WIDTH_MODIFIED_COLUMN);
-		lastModifiedColumn.setCellValueFactory(new Callback<CellDataFeatures<File, Date>, ObservableValue<Date>>() {
+		lastModifiedColumn.setEditable(false);
+		lastModifiedColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("modifiedDate"));
 
-			@Override
-			public ObservableValue<Date> call(CellDataFeatures<File, Date> p) {
-				return new ReadOnlyObjectWrapper<Date>(new Date(p.getValue().getValue().lastModified()));
-			}
-		});
-		lastModifiedColumn.setCellFactory(new Callback<TreeTableColumn<File, Date>, TreeTableCell<File, Date>>() {
-
-			@Override
-			public TreeTableCell<File, Date> call(TreeTableColumn<File, Date> p) {
-				return new TreeTableCell<File, Date>() {
-
-					@Override
-					protected void updateItem(Date item, boolean empty) {
-						super.updateItem(item, empty);
-
-						if (item == null || empty) {
-							setText(null);
-						} else {
-							setText(dateformat.format(item));
-						}
-					}
-				};
-			}
-		});
+		// lastModifiedColumn.setCellValueFactory(new Callback<CellDataFeatures<FileNode, String>, ObservableValue<String>>() {
+		//
+		// @Override
+		// public ObservableValue<Date> call(CellDataFeatures<FileNode, Date> p) {
+		// return new ReadOnlyObjectWrapper<Date>(new Date(p.getValue().getValue().lastModified()));
+		// }
+		// });
+		// lastModifiedColumn.setCellFactory(new Callback<TreeTableColumn<FileNode, Date>, TreeTableCell<FileNode, Date>>() {
+		//
+		// @Override
+		// public TreeTableCell<File, Date> call(TreeTableColumn<File, Date> p) {
+		// return new TreeTableCell<File, Date>() {
+		//
+		// @Override
+		// protected void updateItem(Date item, boolean empty) {
+		// super.updateItem(item, empty);
+		//
+		// if (item == null || empty) {
+		// setText(null);
+		// } else {
+		// setText(dateformat.format(item));
+		// }
+		// }
+		// };
+		// }
+		// });
 		return lastModifiedColumn;
 	}
 
