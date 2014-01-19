@@ -43,7 +43,6 @@ public class FileBrowserTreeTableView {
 		treeTableView.setRoot(root);
 		treeTableView.getColumns().clear();
 		treeTableView.getColumns().setAll(nameColumn, sizeColumn);
-		// treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
 
 	}
 
@@ -84,7 +83,7 @@ public class FileBrowserTreeTableView {
 		sizeColumn.setMinWidth(WIDTH_SIZE_COLUMN);
 		sizeColumn.setPrefWidth(WIDTH_SIZE_COLUMN);
 		sizeColumn.setEditable(false);
-		sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory("fileSize"));
+		sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("fileSize"));
 
 		// sizeColumn.setCellValueFactory(new Callback<CellDataFeatures<FileNode, String>, ObservableValue<String>>() {
 		//
@@ -124,12 +123,12 @@ public class FileBrowserTreeTableView {
 		// };
 		// }
 		// });
-		// sizeColumn.setComparator(new Comparator<File>() {
+		// sizeColumn.setComparator(new Comparator<String>() {
 		//
 		// @Override
-		// public int compare(File f1, File f2) {
-		// long s1 = f1.isDirectory() ? 0 : f1.length();
-		// long s2 = f2.isDirectory() ? 0 : f2.length();
+		// public int compare(FileNode f1, FileNode f2) {
+		// long s1 = f1.isDirectory() ? 0 : f1.getLength();
+		// long s2 = f2.isDirectory() ? 0 : f2.getLength();
 		// long result = s1 - s2;
 		// if (result < 0) {
 		// return -1;

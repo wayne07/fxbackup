@@ -2,34 +2,31 @@ package de.seliger.fxbackup.backup;
 
 import java.io.File;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class FileNode {
 
-	private final StringProperty filename;
-	private final StringProperty fileSize;
-	private final StringProperty modifiedDate;
+	private final String filename;
+	private final String fileSize;
+	private final String modifiedDate;
 
 	private final FileSizeFormatter fileSizeFormatter = new FileSizeFormatter();
 	private final File file;
 
 	public FileNode(File file) {
 		this.file = file;
-		this.filename = new SimpleStringProperty(file.getAbsolutePath());
-		this.fileSize = new SimpleStringProperty(Long.toString(file.length()));
-		this.modifiedDate = new SimpleStringProperty(fileSizeFormatter.format(file.lastModified()));
+		this.filename = file.getName();
+		this.fileSize = Long.toString(file.length());
+		this.modifiedDate = fileSizeFormatter.format(file.lastModified());
 	}
 
-	public StringProperty getFilename() {
+	public String getFilename() {
 		return filename;
 	}
 
-	public StringProperty getFileSize() {
+	public String getFileSize() {
 		return fileSize;
 	}
 
-	public StringProperty getModifiedDate() {
+	public String getModifiedDate() {
 		return modifiedDate;
 	}
 
