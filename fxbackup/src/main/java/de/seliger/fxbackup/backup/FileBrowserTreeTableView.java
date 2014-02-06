@@ -84,22 +84,6 @@ public class FileBrowserTreeTableView {
         //        sizeColumn.setStyle("RIGHT");
         sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("fileSize"));
 
-        // sizeColumn.setComparator(new Comparator<String>() {
-        //
-        // @Override
-        // public int compare(FileNode f1, FileNode f2) {
-        // long s1 = f1.isDirectory() ? 0 : f1.getLength();
-        // long s2 = f2.isDirectory() ? 0 : f2.getLength();
-        // long result = s1 - s2;
-        // if (result < 0) {
-        // return -1;
-        // } else if (result == 0) {
-        // return 0;
-        // } else {
-        // return 1;
-        // }
-        // }
-        // });
         return sizeColumn;
     }
 
