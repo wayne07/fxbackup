@@ -14,9 +14,9 @@ public class FileCheckBoxTreeItem extends CheckBoxTreeItem<FileNode> {
 
     public FileCheckBoxTreeItem(FileNode file) {
         super(file);
-        setIndependent(false);
-
-        selectedProperty().addListener(myStateChangeListener);
+        //        setIndependent(false);
+        //
+        //        selectedProperty().addListener(myStateChangeListener);
 
     }
 

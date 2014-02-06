@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
@@ -51,13 +52,30 @@ public class TreeTableViewApp extends Application {
         notesColumn.setCellValueFactory(new TreeItemPropertyValueFactory("notes"));
         notesColumn.setCellFactory(TextFieldTreeTableCell.<Inventory> forTreeTableColumn());
 
-        final TreeTableView treeTableView = new TreeTableView(getData());
+        TreeItem<Inventory> rootItem = getData();
+        setIndependentToFalse(rootItem);
+
+        final TreeTableView treeTableView = new TreeTableView(rootItem);
+
         treeTableView.setEditable(true);
         treeTableView.setPrefSize(600, 400);
         treeTableView.getColumns().setAll(nameColumn, dataColumn, notesColumn);
 
         return treeTableView;
     }
+
+
+    private void setIndependentToFalse(TreeItem<?> item) {
+        if (item == null || !(item instanceof CheckBoxTreeItem))
+            return;
+
+        CheckBoxTreeItem checkItem = (CheckBoxTreeItem)item;
+        checkItem.setIndependent(false);
+        for (TreeItem child : item.getChildren()) {
+            setIndependentToFalse(child);
+        }
+    }
+
 
     class MyCellFactory implements Callback<Integer, ObservableValue<Boolean>> {
 

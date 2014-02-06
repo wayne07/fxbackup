@@ -62,7 +62,7 @@ public class FileBrowserTreeTableView {
         nameColumn.setPrefWidth(WIDTH_NAME_COLUMN);
         nameColumn.setEditable(true);
         nameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("filename"));
-        nameColumn.setCellFactory(CheckBoxTreeTableCell.<FileNode, String> forTreeTableColumn(new MyCellFactory(), true));
+        nameColumn.setCellFactory(CheckBoxTreeTableCell.<FileNode, String> forTreeTableColumn(new MyCellFactory(treeTableView), true));
 
         return nameColumn;
     }
