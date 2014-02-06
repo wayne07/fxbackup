@@ -9,6 +9,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.util.Callback;
 
 public class FileBrowserTreeTableView {
 
@@ -27,6 +28,7 @@ public class FileBrowserTreeTableView {
         TreeTableColumn<FileNode, String> nameColumn = createNameColumn();
         TreeTableColumn<FileNode, String> sizeColumn = createSizeColumn();
         TreeTableColumn<FileNode, String> lastModifiedColumn = createModifiedColumn();
+        TreeTableColumn<FileNode, Boolean> selectedColumn = createSelectedColumn();
 
         TreeItem<FileNode> root = TreeItemFactory.createNode(new File("/tmp"));
         root.setExpanded(true);
@@ -53,7 +55,7 @@ public class FileBrowserTreeTableView {
         treeTableView.setEditable(true);
         treeTableView.setRoot(root);
         treeTableView.getColumns().clear();
-        treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
+        treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn, selectedColumn);
     }
 
     private TreeTableColumn<FileNode, String> createNameColumn() {
@@ -85,6 +87,26 @@ public class FileBrowserTreeTableView {
         sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, String>("fileSize"));
 
         return sizeColumn;
+    }
+
+    private TreeTableColumn<FileNode, Boolean> createSelectedColumn() {
+        TreeTableColumn<FileNode, Boolean> column = new TreeTableColumn<FileNode, Boolean>("Selected");
+        column.setPrefWidth(WIDTH_SIZE_COLUMN);
+        column.setEditable(true);
+        column.setCellValueFactory(new TreeItemPropertyValueFactory<FileNode, Boolean>("selected"));
+        Callback<Integer, ObservableValue<Boolean>> getSelectedProperty = new Callback<Integer, ObservableValue<Boolean>>() {
+
+            @Override
+            public ObservableValue<Boolean> call(Integer param) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+        };
+        column.setCellFactory(CheckBoxTreeTableCell.<FileNode, Boolean> forTreeTableColumn(getSelectedProperty, false));
+
+        //        invitedColumn.setCellValueFactory(new PropertyValueFactory<Person, Boolean>("invited"));
+        //        invitedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(invitedColumn));
+        return column;
     }
 
 }
