@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
@@ -20,24 +21,12 @@ public class TreeTableViewApp extends Application {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Parent createContent() {
-
-		final TreeTableColumn<Inventory, String> nameColumn = new TreeTableColumn<Inventory, String>("Name");
-		nameColumn.setEditable(true);
-		nameColumn.setMinWidth(130);
-		nameColumn.setCellValueFactory(new TreeItemPropertyValueFactory("name"));
-
-		nameColumn.setCellFactory(CheckBoxTreeTableCell.<Inventory, String> forTreeTableColumn(new MyCellFactory(), true));
-
-		final TreeTableColumn<Inventory, String> dataColumn = new TreeTableColumn<>("Data");
-		dataColumn.setEditable(false);
-		dataColumn.setMinWidth(150);
-		dataColumn.setCellValueFactory(new TreeItemPropertyValueFactory("data"));
-
-		final TreeTableColumn<Inventory, String> notesColumn = new TreeTableColumn<>("Notes (editable)");
-		notesColumn.setEditable(false);
-		notesColumn.setMinWidth(150);
-		notesColumn.setCellValueFactory(new TreeItemPropertyValueFactory("notes"));
-		notesColumn.setCellFactory(TextFieldTreeTableCell.<Inventory> forTreeTableColumn());
+		final TreeTableColumn<Inventory, String> nameColumn = createColumn("Name", true, 200, new TreeItemPropertyValueFactory("name"),
+						CheckBoxTreeTableCell.<Inventory, String> forTreeTableColumn(new MyCellFactory(), true));
+		final TreeTableColumn<Inventory, String> dataColumn = createColumn("Data", false, 150, new TreeItemPropertyValueFactory("data"),
+						null);
+		final TreeTableColumn<Inventory, String> notesColumn = createColumn("Notes", false, 200, new TreeItemPropertyValueFactory("notes"),
+						TextFieldTreeTableCell.<Inventory> forTreeTableColumn());
 
 		final TreeTableView treeTableView = new TreeTableView(getData());
 		treeTableView.setEditable(true);
@@ -110,6 +99,20 @@ public class TreeTableViewApp extends Application {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private TreeTableColumn<Inventory, String> createColumn(String columnName, boolean isEditable, int minWidth,
+					TreeItemPropertyValueFactory valueFactory,
+					Callback<TreeTableColumn<Inventory, String>, TreeTableCell<Inventory, String>> cellFactory) {
+		final TreeTableColumn<Inventory, String> nameColumn = new TreeTableColumn<Inventory, String>(columnName);
+		nameColumn.setEditable(isEditable);
+		nameColumn.setMinWidth(minWidth);
+		nameColumn.setCellValueFactory(valueFactory);
+		if (null != cellFactory) {
+			nameColumn.setCellFactory(cellFactory);
+		}
+		return nameColumn;
 	}
 
 	@SuppressWarnings("unchecked")
