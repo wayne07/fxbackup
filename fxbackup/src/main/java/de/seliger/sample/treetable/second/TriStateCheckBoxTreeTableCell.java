@@ -1,9 +1,9 @@
 package de.seliger.sample.treetable.second;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -36,7 +36,8 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 		return new Callback<TreeTableColumn<Inventory, String>, TreeTableCell<Inventory, String>>() {
 			@Override
 			public TreeTableCell<Inventory, String> call(TreeTableColumn<Inventory, String> list) {
-				TriStateCheckBoxTreeTableCell treeTableCell = new TriStateCheckBoxTreeTableCell(new MyCellFactory(), defaultStringConverter);
+				TriStateCheckBoxTreeTableCell treeTableCell = new TriStateCheckBoxTreeTableCell(new InventoryCallback(),
+								defaultStringConverter);
 				return treeTableCell;
 			}
 		};
@@ -49,45 +50,39 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 
 	private boolean showLabel;
 
-	private ObservableValue<Boolean> booleanProperty;
+	private ObservableObjectValue<Inventory> inventoryObjectValue;
 
 	/***************************************************************************
 	 * * Constructors * *
 	 **************************************************************************/
 
-	/**
-	 * Creates a default CheckBoxTreeTableCell.
-	 */
-	public TriStateCheckBoxTreeTableCell() {
-		this(null, null);
-	}
+	// /**
+	// * Creates a CheckBoxTreeTableCell with a custom string converter.
+	// *
+	// * @param getSelectedProperty
+	// * A {@link Callback} that will return a {@link ObservableValue} given an index from the TreeTableColumn.
+	// * @param converter
+	// * A StringConverter that, given an object of type T, will return a String that can be used to represent the object visually.
+	// */
+	// public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableValue<Boolean>> getSelectedProperty,
+	// final StringConverter<String> converter) {
+	// this.getStyleClass().add("check-box-tree-table-cell");
+	// this.checkBox = new CheckBox();
+	// this.checkBox.setAllowIndeterminate(true);
+	//
+	// setGraphic(null);
+	// setSelectedStateCallback(getSelectedProperty);
+	// setConverter(converter);
+	// }
 
-	/**
-	 * Creates a default CheckBoxTreeTableCell with a custom {@link Callback} to retrieve an ObservableValue for a given cell index.
-	 * 
-	 * @param getSelectedProperty
-	 *            A {@link Callback} that will return an {@link ObservableValue} given an index from the TreeTableColumn.
-	 */
-	public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableValue<Boolean>> getSelectedProperty) {
-		this(getSelectedProperty, null);
-	}
-
-	/**
-	 * Creates a CheckBoxTreeTableCell with a custom string converter.
-	 * 
-	 * @param getSelectedProperty
-	 *            A {@link Callback} that will return a {@link ObservableValue} given an index from the TreeTableColumn.
-	 * @param converter
-	 *            A StringConverter that, given an object of type T, will return a String that can be used to represent the object visually.
-	 */
-	public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableValue<Boolean>> getSelectedProperty,
-					final StringConverter<String> converter) {
+	public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableObjectValue<Inventory>> inventoryCallback,
+					StringConverter<String> converter) {
 		this.getStyleClass().add("check-box-tree-table-cell");
 		this.checkBox = new CheckBox();
 		this.checkBox.setAllowIndeterminate(true);
 
 		setGraphic(null);
-		setSelectedStateCallback(getSelectedProperty);
+		setSelectedStateCallback(inventoryCallback);
 		setConverter(converter);
 	}
 
@@ -125,27 +120,27 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 	}
 
 	// --- selected state callback property
-	private final ObjectProperty<Callback<Integer, ObservableValue<Boolean>>> selectedStateCallback = new SimpleObjectProperty<Callback<Integer, ObservableValue<Boolean>>>(
+	private final ObjectProperty<Callback<Integer, ObservableObjectValue<Inventory>>> selectedStateCallback = new SimpleObjectProperty<Callback<Integer, ObservableObjectValue<Inventory>>>(
 					this, "selectedStateCallback");
 
 	/**
 	 * Property representing the {@link Callback} that is bound to by the CheckBox shown on screen.
 	 */
-	public final ObjectProperty<Callback<Integer, ObservableValue<Boolean>>> selectedStateCallbackProperty() {
+	public final ObjectProperty<Callback<Integer, ObservableObjectValue<Inventory>>> selectedStateCallbackProperty() {
 		return selectedStateCallback;
 	}
 
 	/**
 	 * Sets the {@link Callback} that is bound to by the CheckBox shown on screen.
 	 */
-	public final void setSelectedStateCallback(Callback<Integer, ObservableValue<Boolean>> value) {
+	public final void setSelectedStateCallback(Callback<Integer, ObservableObjectValue<Inventory>> value) {
 		selectedStateCallbackProperty().set(value);
 	}
 
 	/**
 	 * Returns the {@link Callback} that is bound to by the CheckBox shown on screen.
 	 */
-	public final Callback<Integer, ObservableValue<Boolean>> getSelectedStateCallback() {
+	public final Callback<Integer, ObservableObjectValue<Inventory>> getSelectedStateCallback() {
 		return selectedStateCallbackProperty().get();
 	}
 
@@ -169,14 +164,14 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 			}
 			setGraphic(checkBox);
 
-			if (booleanProperty instanceof BooleanProperty) {
-				checkBox.selectedProperty().unbindBidirectional((BooleanProperty) booleanProperty);
-			}
-			ObservableValue obsValue = getSelectedProperty();
-			if (obsValue instanceof BooleanProperty) {
-				booleanProperty = obsValue;
-				checkBox.selectedProperty().bindBidirectional((BooleanProperty) booleanProperty);
-			}
+			// if (inventoryObjectValue instanceof InventoryProperty) {
+			// checkBox.selectedProperty().unbindBidirectional((InventoryProperty) inventoryObjectValue);
+			// }
+			// ObservableValue<?> obsValue = getSelectedProperty();
+			// if (obsValue instanceof InventoryProperty) {
+			// inventoryObjectValue = (ObservableObjectValue<Inventory>) obsValue;
+			// checkBox.selectedProperty().bindBidirectional((InventoryProperty) inventoryObjectValue);
+			// }
 
 			checkBox.disableProperty().bind(
 							Bindings.not(getTreeTableView().editableProperty().and(getTableColumn().editableProperty())
@@ -193,7 +188,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 		this.checkBox.setAlignment(showLabel ? Pos.CENTER_LEFT : Pos.CENTER);
 	}
 
-	private ObservableValue getSelectedProperty() {
+	private ObservableValue<?> getSelectedProperty() {
 		return getSelectedStateCallback() != null ? getSelectedStateCallback().call(getIndex()) : getTableColumn().getCellObservableValue(
 						getIndex());
 	}
