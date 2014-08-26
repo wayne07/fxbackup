@@ -1,17 +1,12 @@
 package de.seliger.sample.treetable.second;
 
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
@@ -22,7 +17,7 @@ public class TreeTableViewApp extends Application {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Parent createContent() {
 		final TreeTableColumn<Inventory, String> nameColumn = createColumn("Name", true, 200, new TreeItemPropertyValueFactory("name"),
-						CheckBoxTreeTableCell.<Inventory, String> forTreeTableColumn(new MyCellFactory(), true));
+						TriStateCheckBoxTreeTableCell.create());
 		final TreeTableColumn<Inventory, String> dataColumn = createColumn("Data", false, 150, new TreeItemPropertyValueFactory("data"),
 						null);
 		final TreeTableColumn<Inventory, String> notesColumn = createColumn("Notes", false, 200, new TreeItemPropertyValueFactory("notes"),
@@ -34,54 +29,6 @@ public class TreeTableViewApp extends Application {
 		treeTableView.getColumns().setAll(nameColumn, dataColumn, notesColumn);
 
 		return treeTableView;
-	}
-
-	class MyCellFactory implements Callback<Integer, ObservableValue<Boolean>> {
-
-		private ObservableBooleanValue observableValue;
-
-		@Override
-		public ObservableValue<Boolean> call(Integer param) {
-			return new ObservableBooleanValue() {
-
-				@Override
-				public void removeListener(InvalidationListener listener) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void addListener(InvalidationListener listener) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void removeListener(ChangeListener<? super Boolean> listener) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public Boolean getValue() {
-					// TODO Auto-generated method stub
-					return true;
-				}
-
-				@Override
-				public void addListener(ChangeListener<? super Boolean> listener) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public boolean get() {
-					// TODO Auto-generated method stub
-					return false;
-				}
-			};
-		}
-
 	}
 
 	@Override
