@@ -27,6 +27,7 @@ public class FxBackupMain extends Application {
     }
 
     public static void main(String[] args) {
+        System.out.println("FXBackup starting ...");
         launch(args);
     }
 
