@@ -79,7 +79,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 					StringConverter<String> converter) {
 		this.getStyleClass().add("check-box-tree-table-cell");
 		this.checkBox = new CheckBox();
-		this.checkBox.setAllowIndeterminate(true);
+		this.checkBox.setAllowIndeterminate(false);
 
 		setGraphic(null);
 		setSelectedStateCallback(inventoryCallback);
