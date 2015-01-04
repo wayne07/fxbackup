@@ -5,12 +5,16 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
+import javafx.event.*;
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+
+import java.awt.*;
 
 public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, String> {
 
@@ -64,16 +68,16 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 	// * @param converter
 	// * A StringConverter that, given an object of type T, will return a String that can be used to represent the object visually.
 	// */
-	// public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableValue<Boolean>> getSelectedProperty,
-	// final StringConverter<String> converter) {
-	// this.getStyleClass().add("check-box-tree-table-cell");
-	// this.checkBox = new CheckBox();
-	// this.checkBox.setAllowIndeterminate(true);
-	//
-	// setGraphic(null);
-	// setSelectedStateCallback(getSelectedProperty);
-	// setConverter(converter);
-	// }
+//	public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableValue<Boolean>> getSelectedProperty,
+//	final StringConverter<String> converter) {
+//	this.getStyleClass().add("check-box-tree-table-cell");
+//	this.checkBox = new CheckBox();
+//	this.checkBox.setAllowIndeterminate(true);
+//
+//	setGraphic(null);
+//	setSelectedStateCallback(getSelectedProperty);
+//	setConverter(converter);
+//	}
 
 	private TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableObjectValue<Inventory>> inventoryCallback,
 					StringConverter<String> converter) {
@@ -84,6 +88,11 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 		setGraphic(null);
 		setSelectedStateCallback(inventoryCallback);
 		setConverter(converter);
+
+		addEventHandler(ActionEvent.ACTION, eventHandler -> {
+			System.out.println("event from: " + eventHandler.getSource());
+			System.out.println("event type: "+eventHandler.getEventType());
+		});
 	}
 
 	/***************************************************************************
