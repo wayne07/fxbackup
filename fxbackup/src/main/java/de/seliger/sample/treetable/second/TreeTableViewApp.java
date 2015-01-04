@@ -48,7 +48,7 @@ public class TreeTableViewApp extends Application {
     private TreeTableColumn<Inventory, String> createColumn(String columnName, boolean isEditable, int minWidth,
                                                             TreeItemPropertyValueFactory valueFactory,
                                                             Callback<TreeTableColumn<Inventory, String>, TreeTableCell<Inventory, String>> cellFactory) {
-        final TreeTableColumn<Inventory, String> nameColumn = new TreeTableColumn<Inventory, String>(columnName);
+        final TreeTableColumn<Inventory, String> nameColumn = new TreeTableColumn<>(columnName);
         nameColumn.setEditable(isEditable);
         nameColumn.setMinWidth(minWidth);
         nameColumn.setCellValueFactory(valueFactory);
