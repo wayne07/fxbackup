@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 
 public class FxBackupMain extends Application {
 
-
     private Parent parent;
 
     @Override

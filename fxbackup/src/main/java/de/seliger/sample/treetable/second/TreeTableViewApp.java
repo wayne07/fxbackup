@@ -68,9 +68,11 @@ public class TreeTableViewApp extends Application {
 		final TreeItem<Inventory> child1Item = new TreeItem<>(new Inventory("Child 1", new Data("Child 1 data"), "My notes"));
 		final TreeItem<Inventory> child2Item = new TreeItem<>(new Inventory("Child 2", new Data("Child 2 data"), "Notes"));
 		TreeItem<Inventory> child3Item = new TreeItem<>(new Inventory("Child 3", new Data("Child 3 data"), "Observations"));
+		TreeItem<Inventory> child4Item = new TreeItem<>(new Inventory("Child 4", new Data("Child 4 data"), "Observations4"));
 		rootItem.setExpanded(true);
 		rootItem.getChildren().addAll(child1Item, child2Item);
 		child1Item.getChildren().add(child3Item);
+		child1Item.getChildren().add(child4Item);
 		return rootItem;
 	}
 
