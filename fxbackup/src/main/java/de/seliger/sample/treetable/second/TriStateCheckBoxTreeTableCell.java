@@ -75,7 +75,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 	// setConverter(converter);
 	// }
 
-	public TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableObjectValue<Inventory>> inventoryCallback,
+	private TriStateCheckBoxTreeTableCell(final Callback<Integer, ObservableObjectValue<Inventory>> inventoryCallback,
 					StringConverter<String> converter) {
 		this.getStyleClass().add("check-box-tree-table-cell");
 		this.checkBox = new CheckBox();
@@ -189,8 +189,9 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 	}
 
 	private ObservableValue<?> getSelectedProperty() {
-		return getSelectedStateCallback() != null ? getSelectedStateCallback().call(getIndex()) : getTableColumn().getCellObservableValue(
-						getIndex());
+		ObservableValue<?> observableValue = getSelectedStateCallback() != null ? getSelectedStateCallback().call(getIndex()) : getTableColumn().getCellObservableValue(
+				getIndex());
+		return observableValue;
 	}
 
 }
