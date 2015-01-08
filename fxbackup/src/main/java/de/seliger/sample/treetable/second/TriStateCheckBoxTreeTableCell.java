@@ -8,8 +8,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
+import javafx.scene.control.TreeTableView;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
@@ -39,6 +42,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 			public TreeTableCell<Inventory, String> call(TreeTableColumn<Inventory, String> list) {
 				TriStateCheckBoxTreeTableCell treeTableCell = new TriStateCheckBoxTreeTableCell(new InventoryCallback(),
 								defaultStringConverter);
+//				treeTableCell.setUserData();
 				return treeTableCell;
 			}
 		};
@@ -90,7 +94,30 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 			TriStateCheckBoxTreeTableCell treeTableCell = (TriStateCheckBoxTreeTableCell) eventHandler.getSource();
 			System.out.println("event from: " + treeTableCell);
 			System.out.println("event type: "+eventHandler.getEventType());
-			System.out.println("cp-selected: "+treeTableCell.checkBox.isSelected());
+			boolean isSelected = treeTableCell.checkBox.isSelected();
+			System.out.println("cp-selected: "+ isSelected);
+
+
+			TreeTableView<Inventory> treeTableView = treeTableCell.getTreeTableView();
+			TreeTableRow<Inventory> treeTableRow = treeTableCell.getTreeTableRow();
+			TreeItem<Inventory> treeItem = treeTableRow.getTreeItem();
+			int treeItemLevel = treeTableView.getTreeItemLevel(treeItem);
+			System.out.println("treeItemLevel: "+treeItemLevel);
+
+			System.out.println("isLeaf: " + treeItem.isLeaf());
+			System.out.println("isExpanded: "+treeItem.isExpanded());
+			TreeItem<Inventory> parent = treeItem.getParent();
+			System.out.println("item.parent.value: " + parent.getValue());
+
+			int parentRow = treeTableView.getRow(parent);
+			System.out.println("parentRow: "+ parentRow);
+
+			int row = treeTableView.getRow(treeItem);
+			System.out.println("row: "+ row);
+
+			int rowIndex = treeTableRow.getIndex();
+			System.out.println("rowIndex: "+ rowIndex);
+
 		});
 	}
 
