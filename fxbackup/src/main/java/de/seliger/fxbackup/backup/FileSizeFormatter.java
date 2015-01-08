@@ -14,7 +14,6 @@ public class FileSizeFormatter {
 		String result = "";
 		String formattedSize = getFormattedSizeFor(length);
 		result = formattedSize + getSuffixFor(length);
-		// System.out.println("FileBrowserTreeTableView.createSizeColumn(): " + result);
 		return result;
 	}
 
