@@ -39,17 +39,43 @@ public class TreeTableFxDemo extends Application {
         treeTableView.setShowRoot(true);
         treeTableView.setRoot(root);
 
-        // --- name column
-        TreeTableColumn<File, String> nameColumn = new TreeTableColumn<>("Name");
-        nameColumn.setPrefWidth(300);
-        nameColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<File, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<File, String> p) {
-                File f = p.getValue().getValue();
-                String text = f.getParentFile() == null ? "/" : f.getName();
-                return new ReadOnlyObjectWrapper<>(text);
+        TreeTableColumn<File, String> nameColumn = createNameColumn();
+        TreeTableColumn<File, File> sizeColumn = createSizeColumn();
+        TreeTableColumn<File, Date> lastModifiedColumn = createModifiedColumn();
+
+        treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
+
+        return treeTableView;
+    }
+
+    private TreeTableColumn<File, Date> createModifiedColumn() {
+        // --- modified column
+        TreeTableColumn<File, Date> lastModifiedColumn = new TreeTableColumn<>("Last Modified");
+        lastModifiedColumn.setPrefWidth(130);
+        lastModifiedColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<File, Date>, ObservableValue<Date>>() {
+            @Override public ObservableValue<Date> call(TreeTableColumn.CellDataFeatures<File, Date> p) {
+                return new ReadOnlyObjectWrapper<>(new Date(p.getValue().getValue().lastModified()));
             }
         });
+        lastModifiedColumn.setCellFactory(new Callback<TreeTableColumn<File, Date>, TreeTableCell<File, Date>>() {
+            @Override public TreeTableCell<File, Date> call(TreeTableColumn<File, Date> p) {
+                return new TreeTableCell<File, Date>() {
+                    @Override protected void updateItem(Date item, boolean empty) {
+                        super.updateItem(item, empty);
 
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(df.format(item));
+                        }
+                    }
+                };
+            }
+        });
+        return lastModifiedColumn;
+    }
+
+    private TreeTableColumn<File, File> createSizeColumn() {
         // --- size column
         TreeTableColumn<File, File> sizeColumn = new TreeTableColumn<>("Size");
         sizeColumn.setPrefWidth(100);
@@ -98,34 +124,21 @@ public class TreeTableFxDemo extends Application {
                 }
             }
         });
+        return sizeColumn;
+    }
 
-        // --- modified column
-        TreeTableColumn<File, Date> lastModifiedColumn = new TreeTableColumn<>("Last Modified");
-        lastModifiedColumn.setPrefWidth(130);
-        lastModifiedColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<File, Date>, ObservableValue<Date>>() {
-            @Override public ObservableValue<Date> call(TreeTableColumn.CellDataFeatures<File, Date> p) {
-                return new ReadOnlyObjectWrapper<>(new Date(p.getValue().getValue().lastModified()));
+    private TreeTableColumn<File, String> createNameColumn() {
+        // --- name column
+        TreeTableColumn<File, String> nameColumn = new TreeTableColumn<>("Name");
+        nameColumn.setPrefWidth(300);
+        nameColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<File, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<File, String> p) {
+                File f = p.getValue().getValue();
+                String text = f.getParentFile() == null ? "/" : f.getName();
+                return new ReadOnlyObjectWrapper<>(text);
             }
         });
-        lastModifiedColumn.setCellFactory(new Callback<TreeTableColumn<File, Date>, TreeTableCell<File, Date>>() {
-            @Override public TreeTableCell<File, Date> call(TreeTableColumn<File, Date> p) {
-                return new TreeTableCell<File, Date>() {
-                    @Override protected void updateItem(Date item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (item == null || empty) {
-                            setText(null);
-                        } else {
-                            setText(df.format(item));
-                        }
-                    }
-                };
-            }
-        });
-
-        treeTableView.getColumns().setAll(nameColumn, sizeColumn, lastModifiedColumn);
-
-        return treeTableView;
+        return nameColumn;
     }
 
     private TreeItem<File> createNode(final File f) {
