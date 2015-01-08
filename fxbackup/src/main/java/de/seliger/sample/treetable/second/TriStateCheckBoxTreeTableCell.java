@@ -5,16 +5,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
-import javafx.event.*;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-
-import java.awt.*;
 
 public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, String> {
 
@@ -90,8 +87,10 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 		setConverter(converter);
 
 		addEventHandler(ActionEvent.ACTION, eventHandler -> {
-			System.out.println("event from: " + eventHandler.getSource());
+			TriStateCheckBoxTreeTableCell treeTableCell = (TriStateCheckBoxTreeTableCell) eventHandler.getSource();
+			System.out.println("event from: " + treeTableCell);
 			System.out.println("event type: "+eventHandler.getEventType());
+			System.out.println("cp-selected: "+treeTableCell.checkBox.isSelected());
 		});
 	}
 
