@@ -1,0 +1,51 @@
+apply plugin: 'base'
+
+version = '1.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '2.1' }
+
+ext {
+    jenkinsConfigDir = file("/home/js/.jenkins")
+    backupDir = file("/home/js/tmp/backup/jenkins")
+}
+
+task runJenkinsBackup << {
+    println "Backup beendet."
+}
+
+task doBackup (type: org.gradle.api.tasks.Copy) {
+    doFirst {
+        println "erzeuge Verzeichnis $backupDir"
+        backupDir.mkdirs()
+    }
+    println "erzeuge Backup ..."
+    from(jenkinsConfigDir) {
+        exclude '**/workspace'
+        exclude '**/workspace@2'
+        exclude '**/modules'
+        exclude '**/lastStableBuild'
+        exclude '**/lastSuccessfulBuild'
+        exclude '**/lastUnstableBuild'
+        exclude '**/lastStable'
+        exclude '**/lastSuccessful'
+        exclude '**/lastFailedBuild'
+        exclude '**/lastUnsuccessfulBuild'
+        exclude '**/logs'
+        exclude '**/war'
+        exclude '**/cache'
+        exclude '**/*.bak'
+        exclude '**/log'
+        exclude '**/fingerprints'
+    }
+    into backupDir
+}
+
+runJenkinsBackup.dependsOn doBackup
+
+
+
