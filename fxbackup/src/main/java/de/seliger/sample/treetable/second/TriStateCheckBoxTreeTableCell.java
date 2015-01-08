@@ -261,7 +261,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 
             if (isRoot(treeTableView, parent)) {
                 // Ende
-                System.out.println("root erreicht");
+                System.out.println("Ende, root erreicht");
             } else {
                 System.out.println("item: "+parent.getValue().nameProperty());
                 updateParentsToRoot(treeTableView, parent, isSelected);
