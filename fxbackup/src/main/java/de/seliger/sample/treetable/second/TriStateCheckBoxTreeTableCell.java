@@ -41,7 +41,12 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
      */
 
     public static Callback<TreeTableColumn<Inventory, String>, TreeTableCell<Inventory, String>> create() {
-        return list -> new TriStateCheckBoxTreeTableCell(new InventoryCallback(), defaultStringConverter);
+        return new Callback<TreeTableColumn<Inventory, String>, TreeTableCell<Inventory, String>>() {
+            @Override
+            public TreeTableCell<Inventory, String> call(TreeTableColumn<Inventory, String> list) {
+                return new TriStateCheckBoxTreeTableCell(new InventoryCallback(), defaultStringConverter);
+            }
+        };
     }
 
     /**
@@ -84,6 +89,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
         this.getStyleClass().add("check-box-tree-table-cell");
         this.checkBox = new CheckBox();
         this.checkBox.setAllowIndeterminate(false);
+        this.inventoryObjectValue = inventoryCallback.call(null);
 
         setGraphic(null);
         setSelectedStateCallback(inventoryCallback);
@@ -258,6 +264,14 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
         private void updateParentsToRoot(TreeTableView<Inventory> treeTableView, TreeItem<Inventory> treeItem, boolean isSelected) {
             TreeItem<Inventory> parent = treeItem.getParent();
             parent.getValue().setSelected(isSelected);
+            TreeTableColumn<Inventory, ?> treeColumn = treeTableView.getColumns().get(0);
+
+            Callback<? extends TreeTableColumn<Inventory, ?>, ? extends TreeTableCell<Inventory, ?>> cellFactory = treeColumn.getCellFactory();
+            TreeTableCell<Inventory, ?> treeTableCell = cellFactory.call(null);
+            if( treeTableCell instanceof TriStateCheckBoxTreeTableCell ) {
+                TriStateCheckBoxTreeTableCell cell = (TriStateCheckBoxTreeTableCell) treeTableCell;
+                cell.checkBox.setIndeterminate(true);
+            }
 
             if (isRoot(treeTableView, parent)) {
                 // Ende
