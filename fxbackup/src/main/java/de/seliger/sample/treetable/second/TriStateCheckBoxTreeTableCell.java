@@ -210,27 +210,34 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
             boolean isSelected = treeTableCell.checkBox.isSelected();
             System.out.println("cp-selected: " + isSelected);
 
-
             TreeTableView<Inventory> treeTableView = treeTableCell.getTreeTableView();
             TreeTableRow<Inventory> treeTableRow = treeTableCell.getTreeTableRow();
             TreeItem<Inventory> treeItem = treeTableRow.getTreeItem();
+
             int treeItemLevel = treeTableView.getTreeItemLevel(treeItem);
             System.out.println("treeItemLevel: " + treeItemLevel);
 
-            System.out.println("isLeaf: " + treeItem.isLeaf());
-            System.out.println("isExpanded: " + treeItem.isExpanded());
-            TreeItem<Inventory> parent = treeItem.getParent();
-            System.out.println("item.parent.value: " + parent.getValue());
+			if(isRoot(treeTableView, treeItem)) {
+				// do something
+			} else {
+				System.out.println("isLeaf: " + treeItem.isLeaf());
+				System.out.println("isExpanded: " + treeItem.isExpanded());
+				TreeItem<Inventory> parent = treeItem.getParent();
+				System.out.println("item.parent.value: " + parent.getValue());
 
-            int parentRow = treeTableView.getRow(parent);
-            System.out.println("parentRow: " + parentRow);
+				int parentRow = treeTableView.getRow(parent);
+				System.out.println("parentRow: " + parentRow);
 
-            int row = treeTableView.getRow(treeItem);
-            System.out.println("row: " + row);
+				int row = treeTableView.getRow(treeItem);
+				System.out.println("row: " + row);
 
-            int rowIndex = treeTableRow.getIndex();
-            System.out.println("rowIndex: " + rowIndex);
-
+				int rowIndex = treeTableRow.getIndex();
+				System.out.println("rowIndex: " + rowIndex);
+			}
         }
+
+		private boolean isRoot(TreeTableView<Inventory> treeTableView, TreeItem<Inventory> treeItem) {
+			return treeTableView.getTreeItemLevel(treeItem) == 0;
+		}
 	}
 }
