@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TreeItem;
@@ -90,35 +91,7 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 		setSelectedStateCallback(inventoryCallback);
 		setConverter(converter);
 
-		addEventHandler(ActionEvent.ACTION, eventHandler -> {
-			TriStateCheckBoxTreeTableCell treeTableCell = (TriStateCheckBoxTreeTableCell) eventHandler.getSource();
-			System.out.println("event from: " + treeTableCell);
-			System.out.println("event type: "+eventHandler.getEventType());
-			boolean isSelected = treeTableCell.checkBox.isSelected();
-			System.out.println("cp-selected: "+ isSelected);
-
-
-			TreeTableView<Inventory> treeTableView = treeTableCell.getTreeTableView();
-			TreeTableRow<Inventory> treeTableRow = treeTableCell.getTreeTableRow();
-			TreeItem<Inventory> treeItem = treeTableRow.getTreeItem();
-			int treeItemLevel = treeTableView.getTreeItemLevel(treeItem);
-			System.out.println("treeItemLevel: "+treeItemLevel);
-
-			System.out.println("isLeaf: " + treeItem.isLeaf());
-			System.out.println("isExpanded: "+treeItem.isExpanded());
-			TreeItem<Inventory> parent = treeItem.getParent();
-			System.out.println("item.parent.value: " + parent.getValue());
-
-			int parentRow = treeTableView.getRow(parent);
-			System.out.println("parentRow: "+ parentRow);
-
-			int row = treeTableView.getRow(treeItem);
-			System.out.println("row: "+ row);
-
-			int rowIndex = treeTableRow.getIndex();
-			System.out.println("rowIndex: "+ rowIndex);
-
-		});
+		addEventHandler(ActionEvent.ACTION, new ActionEventHandler());
 	}
 
 	/***************************************************************************
@@ -229,4 +202,35 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
 		return observableValue;
 	}
 
+	private static class ActionEventHandler implements EventHandler<ActionEvent> {
+		@Override
+        public void handle(ActionEvent eventHandler) {
+            TriStateCheckBoxTreeTableCell treeTableCell = (TriStateCheckBoxTreeTableCell) eventHandler.getSource();
+            System.out.println(eventHandler.getEventType()+"-Event from: " +treeTableCell.getText());
+            boolean isSelected = treeTableCell.checkBox.isSelected();
+            System.out.println("cp-selected: " + isSelected);
+
+
+            TreeTableView<Inventory> treeTableView = treeTableCell.getTreeTableView();
+            TreeTableRow<Inventory> treeTableRow = treeTableCell.getTreeTableRow();
+            TreeItem<Inventory> treeItem = treeTableRow.getTreeItem();
+            int treeItemLevel = treeTableView.getTreeItemLevel(treeItem);
+            System.out.println("treeItemLevel: " + treeItemLevel);
+
+            System.out.println("isLeaf: " + treeItem.isLeaf());
+            System.out.println("isExpanded: " + treeItem.isExpanded());
+            TreeItem<Inventory> parent = treeItem.getParent();
+            System.out.println("item.parent.value: " + parent.getValue());
+
+            int parentRow = treeTableView.getRow(parent);
+            System.out.println("parentRow: " + parentRow);
+
+            int row = treeTableView.getRow(treeItem);
+            System.out.println("row: " + row);
+
+            int rowIndex = treeTableRow.getIndex();
+            System.out.println("rowIndex: " + rowIndex);
+
+        }
+	}
 }
