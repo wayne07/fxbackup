@@ -10,6 +10,7 @@ public class Inventory {
 	private final StringProperty name;
 	private final ObjectProperty<Data> data;
 	private final StringProperty notes;
+	private boolean isSelected = false;
 
 	public Inventory(String name, Data data, String notes) {
 		this.name = new SimpleStringProperty(name);
@@ -28,4 +29,13 @@ public class Inventory {
 	public ObjectProperty<Data> dataProperty() {
 		return data;
 	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
 }

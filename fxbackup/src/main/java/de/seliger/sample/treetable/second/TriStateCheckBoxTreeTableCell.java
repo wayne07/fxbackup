@@ -5,6 +5,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -214,42 +215,57 @@ public class TriStateCheckBoxTreeTableCell extends TreeTableCell<Inventory, Stri
             TreeTableView<Inventory> treeTableView = treeTableCell.getTreeTableView();
             TreeTableRow<Inventory> treeTableRow = treeTableCell.getTreeTableRow();
             TreeItem<Inventory> treeItem = treeTableRow.getTreeItem();
+            treeItem.getValue().setSelected(isSelected);
 
             int treeItemLevel = treeTableView.getTreeItemLevel(treeItem);
             System.out.println("treeItemLevel: " + treeItemLevel);
 
             if (isRoot(treeTableView, treeItem)) {
                 // do something
+                updateChildren(treeTableView, treeItem, isSelected);
             } else {
                 boolean isLeaf = treeItem.isLeaf();
                 System.out.println("isLeaf: " + isLeaf);
                 System.out.println("isExpanded: " + treeItem.isExpanded());
-                TreeItem<Inventory> parent = treeItem.getParent();
-                System.out.println("item.parent.value: " + parent.getValue());
+//                TreeItem<Inventory> parent = treeItem.getParent();
+//                System.out.println("item.parent.value: " + parent.getValue().nameProperty());
 
-                int parentRow = treeTableView.getRow(parent);
-                System.out.println("parentRow: " + parentRow);
-
-                int row = treeTableView.getRow(treeItem);
-                System.out.println("row: " + row);
-
-                int rowIndex = treeTableRow.getIndex();
-                System.out.println("rowIndex: " + rowIndex);
+//                int parentRow = treeTableView.getRow(parent);
+//                System.out.println("parentRow: " + parentRow);
+//
+//                int row = treeTableView.getRow(treeItem);
+//                System.out.println("row: " + row);
+//
+//                int rowIndex = treeTableRow.getIndex();
+//                System.out.println("rowIndex: " + rowIndex);
 
                 if (isLeaf) {
                     updateParentsToRoot(treeTableView, treeItem, isSelected);
                 } else {
+                    updateParentsToRoot(treeTableView, treeItem, isSelected); // partiell selektiert
                     updateChildren(treeTableView, treeItem, isSelected);
                 }
             }
         }
 
         private void updateChildren(TreeTableView<Inventory> treeTableView, TreeItem<Inventory> treeItem, boolean isSelected) {
-
+            ObservableList<TreeItem<Inventory>> children = treeItem.getChildren();
+            for (TreeItem<Inventory> child : children) {
+                child.getValue().setSelected(isSelected);
+            }
         }
 
         private void updateParentsToRoot(TreeTableView<Inventory> treeTableView, TreeItem<Inventory> treeItem, boolean isSelected) {
+            TreeItem<Inventory> parent = treeItem.getParent();
+            parent.getValue().setSelected(isSelected);
 
+            if (isRoot(treeTableView, parent)) {
+                // Ende
+                System.out.println("root erreicht");
+            } else {
+                System.out.println("item: "+parent.getValue().nameProperty());
+                updateParentsToRoot(treeTableView, parent, isSelected);
+            }
         }
 
         private boolean isRoot(TreeTableView<Inventory> treeTableView, TreeItem<Inventory> treeItem) {

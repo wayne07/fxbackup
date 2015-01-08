@@ -1,6 +1,8 @@
 package de.seliger.sample.treetable.second;
 
 import javafx.application.Application;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
@@ -23,7 +25,14 @@ public class TreeTableViewApp extends Application {
         final TreeTableView treeTableView = new TreeTableView(getData());
         treeTableView.setEditable(true);
         treeTableView.setPrefSize(600, 400);
-        treeTableView.getColumns().setAll(nameColumn, dataColumn, notesColumn);
+        ObservableList observableList = treeTableView.getColumns();
+        observableList.setAll(nameColumn, dataColumn, notesColumn);
+        observableList.addListener((ListChangeListener.Change c) -> {
+            if(c.wasUpdated()) {
+                int from = c.getFrom();
+                System.out.println("from:"+from);
+            }
+        });
 
         return treeTableView;
     }
