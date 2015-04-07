@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.seliger.fx.demo.DemoPresenter">
+   <center>
+      <TreeTableView fx:id="demoTreeTable" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TreeTableColumn prefWidth="75.0" text="C1" />
+          <TreeTableColumn prefWidth="75.0" text="C2" />
+            <TreeTableColumn prefWidth="75.0" text="Column X" />
+            <TreeTableColumn prefWidth="75.0" text="Column X" />
+        </columns>
+      </TreeTableView>
+   </center>
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="TreeTable-Demo" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
