@@ -24,7 +24,7 @@ public class TreeTableDemo extends Application {
     public void start(Stage stage) {
         Scene scene = new Scene(parent, 800, 600);
         stage.setScene(scene);
-        stage.setTitle("FXBackup preview");
+        stage.setTitle("Demo");
         stage.show();
     }
 
